@@ -57,7 +57,6 @@ class w_coins {
 		$this->coins["create_feebee_account"]=$this->my_w->coins["create_feebee_account"];
 		
 		$this->coins_names[0]=$this->my_w->coins["coin_name_1"];
-		echo $this->my_w->coins["coin_name_1"];
 		$this->coins_names[1]=$this->my_w->coins["coin_name_2"];
 		$this->coins_names[2]=$this->my_w->coins["coin_name_3"];
 
