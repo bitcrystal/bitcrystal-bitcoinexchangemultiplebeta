@@ -35,6 +35,7 @@ class w_coins {
 		$instance_id = 0;
 		$select_instance_id = 0;
 		$tmp = $this->my_all_coins->get_last_w_coins_settings();
+		print_r($tmp);
 		$this->w_coins_settings = $tmp[0];
 		$tmp = $this->my_all_coins->getCoins();
 		$this->coins = $tmp[0];
