@@ -33,13 +33,13 @@ class w_coins {
 		$this->setFeeBeeAccount(false);
 		$instance_id = 0;
 		$select_instance_id = 0;
-		$tmp = $my_all_coins->get_last_w_coins_settings();
+		$tmp = $this->my_all_coins->get_last_w_coins_settings();
 		$this->w_coins_settings = $tmp[0];
-		$tmp = $my_all_coins->getCoins();
+		$tmp = $this->my_all_coins->getCoins();
 		$this->coins = $tmp[0];
-		$tmp = $my_all_coins->getCoinsNames();
+		$tmp = $this->my_all_coins->getCoinsNames();
 		$this->coins_names = $tmp[0];
-		$tmp = $my_all_coins->getCoinsNamesPrefix();
+		$tmp = $this->my_all_coins->getCoinsNamesPrefix();
 		$this->coins_names_prefix = $tmp[0];
 		$this->coins_count=count($this->coins_names);
 		
