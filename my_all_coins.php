@@ -145,7 +145,7 @@ class my_all_coins
 	{
 		if($this->w_coins_settings==false)
 		{
-			$this->w_coins_settings=$this->get_w_coins_settings();
+			$this->w_coins_settings=$this->get_last_w_coins_settings();
 			$build = $this->count_coins_packages!=0;
 		} else {
 			$build = true;
@@ -161,7 +161,7 @@ class my_all_coins
 	{
 		if($this->w_coins_settings==false)
 		{
-			$this->w_coins_settings=$this->get_w_coins_settings();
+			$this->w_coins_settings=$this->get_last_w_coins_settings();
 			$build = $this->count_coins_packages!=0;
 		} else {
 			$build = true;
@@ -180,7 +180,7 @@ class my_all_coins
 		if($this->w_coins_settings==false) {
 			$this->get_w_coins_settings($startoffset);
 		}
-		return $this->w_coins_settings;
+		return array($this->w_coins_settings);
 	}
 	
 	public static function get()
