@@ -30,6 +30,7 @@ class w_coins {
 		$this->my_all_coins->add("Bitcoin");
 		$this->my_all_coins->add("Bitcrystal");
 		$this->my_all_coins->add("Bitcrystalx");
+		$this->my_all_coins->build();
 		$this->setFeeBeeAccount(false);
 		$instance_id = 0;
 		$select_instance_id = 0;
@@ -81,7 +82,7 @@ class w_coins {
 		$this->coins[$this->coins_names[2]]["FEEBEE"]=$this->my_w->coins["coin_feebee_3"];
 		$this->coins[$this->coins_names[2]]["buy_fee"]=$this->my_w->coins["coin_buy_fee_3"];
 		$this->coins[$this->coins_names[2]]["sell_fee"]=$this->my_w->coins["coin_sell_fee_3"];
-		
+		/*
 		$coin0rpc = $this->my_w->coins[$this->coins_names[0]]["rpcsettings"];
 		$coin1rpc = $this->my_w->coins[$this->coins_names[1]]["rpcsettings"];
 		$coin2rpc = $this->my_w->coins[$this->coins_names[2]]["rpcsettings"];
@@ -213,7 +214,7 @@ class w_coins {
 
 		$this->my_w = $this->w_coins_settings[0];
 		$this->enabled_coins_count = count($this->enabled_coins);
-		$this->enable_default_coins();
+		$this->enable_default_coins();*/
 	}
 	
 	public function set_current_from_trade_coin_prefix_and_name($prefix, $name)
