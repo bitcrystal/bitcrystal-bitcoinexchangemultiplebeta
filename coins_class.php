@@ -25,13 +25,22 @@ class w_coins {
 	private $w_coins_settings = array();
 	private static $SINGLETON = NULL;
 	
-	private function __construct() {
-		$this->my_all_coins=my_all_coins::get();
+	private function initCoins() {
+		//The amount of coins you are add must dividable through 3
 		$this->my_all_coins->add("Bitcoin");
 		$this->my_all_coins->add("Bitcrystal");
 		$this->my_all_coins->add("Bitcrystalx");
+	}
+	
+	private function initFeeBeeAccount($set = false) {
+		$this->setFeeBeeAccount($set);
+	}
+	
+	private function __construct() {
+		$this->my_all_coins=my_all_coins::get();
+		$this->initCoins();
 		$this->my_all_coins->build();
-		$this->setFeeBeeAccount(false);
+		$this->initFeeBeeAccount();
 		$instance_id = 0;
 		$select_instance_id = 0;
 		$tmp = $this->my_all_coins->get_last_w_coins_settings();
