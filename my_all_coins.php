@@ -190,8 +190,4 @@ class my_all_coins
 		return self::$SINGLETON;
 	}
 }
-$my_all_coins = my_all_coins::get();
-$my_all_coins->add("Bitcoin");
-$my_all_coins->add("Bitcrystal");
-$my_all_coins->add("Bitcrystalx");
 ?>
