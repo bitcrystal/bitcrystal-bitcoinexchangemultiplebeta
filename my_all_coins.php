@@ -178,7 +178,7 @@ class my_all_coins
 	public function get_last_w_coins_settings($startoffset = 0)
 	{
 		if($this->w_coins_settings==false) {
-			return $this->get_w_coins_settings($startoffset);
+			$this->get_w_coins_settings($startoffset);
 		}
 		return array($this->w_coins_settings);
 	}
