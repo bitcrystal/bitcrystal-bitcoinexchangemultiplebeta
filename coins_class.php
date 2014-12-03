@@ -27,6 +27,7 @@ class w_coins {
 	
 	private function initCoins() {
 		//The amount of coins you are add must dividable through 3
+		//The coins configs file for this coins you can find in the directory my_coins
 		$this->my_all_coins->add("Bitcoin");
 		$this->my_all_coins->add("Bitcrystal");
 		$this->my_all_coins->add("Bitcrystalx");
