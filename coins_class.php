@@ -25,23 +25,34 @@ class w_coins {
 	private $w_coins_settings = array();
 	private static $SINGLETON = NULL;
 	
-	private function initCoins() {
+	private function initCoins($add_coins) {
 		//The amount of coins you are add must dividable through 3
 		//The coins configs file for this coins you can find in the directory my_coins
-		$this->my_all_coins->add("Bitcoin");
-		$this->my_all_coins->add("Bitcrystal");
-		$this->my_all_coins->add("Bitcrystalx");
+		$count = count($add_coins);
+		if($count%3!=0)
+			throw("ERROR ELEMENTS OF THE COINS ARRAY IS NOT DIVIDABLE THROUGH 3");
+		for($i=0; $i < $count; $i+=3)
+		{
+			$this->my_all_coins->add($add_coins[0+$i]);
+			$this->my_all_coins->add($add_coins[1+$i]);
+			$this->my_all_coins->add($add_coins[2+$i]);
+		}
 	}
 	
-	private function initFeeBeeAccount($set = false) {
+	private function initFeeBeeAccount($set) {
 		$this->setFeeBeeAccount($set);
 	}
 	
-	private function __construct() {
+	private function __construct($add_coins = false, $init_feebee_account = false) {
 		$this->my_all_coins=my_all_coins::get();
-		$this->initCoins();
+		if($add_coins!=false)
+			$this->initCoins($add_coins);
+		else
+			$this->add_coins(array("Bitcoin","Bitcrystal","Bitcrystalx"));
 		$this->my_all_coins->build();
-		$this->initFeeBeeAccount();
+		if($init_feebee_account!=true)
+			$init_feebee_account=false;
+		$this->initFeeBeeAccount($init_feebee_account);
 		$instance_id = 0;
 		$select_instance_id = 0;
 		$tmp = $this->my_all_coins->get_last_w_coins_settings();
