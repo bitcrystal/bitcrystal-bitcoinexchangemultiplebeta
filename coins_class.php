@@ -48,7 +48,7 @@ class w_coins {
 		if($add_coins!=false)
 			$this->initCoins($add_coins);
 		else
-			$this->add_coins(array("Bitcoin","Bitcrystal","Bitcrystalx"));
+			$this->initCoins(array("Bitcoin","Bitcrystal","Bitcrystalx"));
 		$this->my_all_coins->build();
 		if($init_feebee_account!=true)
 			$init_feebee_account=false;
