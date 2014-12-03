@@ -39,6 +39,7 @@ class w_coins {
 		print_r($this->w_coins_settings[0]);
 		$tmp = $this->my_all_coins->getCoins();
 		$this->coins = $tmp[0];
+		print_r($this->w_coins_settings[0]);
 		$tmp = $this->my_all_coins->getCoinsNames();
 		$this->coins_names = $tmp[0];
 		$tmp = $this->my_all_coins->getCoinsNamesPrefix();
