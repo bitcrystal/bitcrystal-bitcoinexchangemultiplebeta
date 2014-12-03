@@ -46,9 +46,17 @@ class w_coins {
 	private function __construct($add_coins = false, $init_feebee_account = false) {
 		$this->my_all_coins=my_all_coins::get();
 		if($add_coins!=false)
+		{
 			$this->initCoins($add_coins);
+		}
 		else
-			$this->initCoins(array("Bitcoin","Bitcrystal","Bitcrystalx"));
+		{
+			$add_coins = array();
+			$add_coins[0] = "Bitcoin";
+			$add_coins[1] = "Bitcrystal";
+			$add_coins[2] = "Bitcrystalx";
+			$this->initCoins($add_coins);
+		}
 		$this->my_all_coins->build();
 		if($init_feebee_account!=true)
 			$init_feebee_account=false;
