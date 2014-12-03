@@ -61,7 +61,7 @@ class my_coin
 		$this->coin["prefix"]=$coin_prefix;
 	}
 	
-	private function set_fee($coin_fee)
+	public function set_fee($coin_fee)
 	{
 		$this->coin["fee"] = $coin_fee;
 	}
