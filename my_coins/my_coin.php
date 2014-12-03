@@ -113,7 +113,7 @@ class my_coin
 		return $this->coin["prefix"];
 	}
 	
-	private function getFee()
+	public function getFee()
 	{
 		return $this->coin["fee"];
 	}
