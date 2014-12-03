@@ -36,8 +36,6 @@ class w_coins {
 		$select_instance_id = 0;
 		$tmp = $this->my_all_coins->get_last_w_coins_settings();
 		$this->w_coins_settings = $tmp[0];
-		print_r($this->w_coins_settings);
-		return;
 		$tmp = $this->my_all_coins->getCoins();
 		$this->coins = $tmp[0];
 		$tmp = $this->my_all_coins->getCoinsNames();
@@ -46,7 +44,7 @@ class w_coins {
 		$this->coins_names_prefix = $tmp[0];
 		$this->coins_count=count($this->coins_names);
 		
-		$this->my_w = $this->w_coins_settings[0];
+		$this->my_w = new w_coins_settings();
 		$this->coins["create_feebee_account"]=$this->my_w->coins["create_feebee_account"];
 		
 		$this->coins_names[0]=$this->my_w->coins["coin_name_1"];
@@ -84,7 +82,7 @@ class w_coins {
 		$this->coins[$this->coins_names[2]]["FEEBEE"]=$this->my_w->coins["coin_feebee_3"];
 		$this->coins[$this->coins_names[2]]["buy_fee"]=$this->my_w->coins["coin_buy_fee_3"];
 		$this->coins[$this->coins_names[2]]["sell_fee"]=$this->my_w->coins["coin_sell_fee_3"];
-		/*
+		
 		$coin0rpc = $this->my_w->coins[$this->coins_names[0]]["rpcsettings"];
 		$coin1rpc = $this->my_w->coins[$this->coins_names[1]]["rpcsettings"];
 		$coin2rpc = $this->my_w->coins[$this->coins_names[2]]["rpcsettings"];
@@ -216,7 +214,7 @@ class w_coins {
 
 		$this->my_w = $this->w_coins_settings[0];
 		$this->enabled_coins_count = count($this->enabled_coins);
-		$this->enable_default_coins();*/
+		$this->enable_default_coins();
 	}
 	
 	public function set_current_from_trade_coin_prefix_and_name($prefix, $name)
