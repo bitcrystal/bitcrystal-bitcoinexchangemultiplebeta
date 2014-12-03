@@ -137,7 +137,7 @@ class my_all_coins
 			$w_coins_settings[$i]->set_rpc_settings_coin_2($coins[1+$offset]["rpcsettings"]["user"],$coins[1+$offset]["rpcsettings"]["pass"],$coins[1+$offset]["rpcsettings"]["host"],$coins[1+$offset]["rpcsettings"]["port"],$coins[1+$offset]["rpcsettings"]["walletpassphrase"],$coins[1+$offset]["rpcsettings"]["walletpassphrase_timeout"]);
 			$w_coins_settings[$i]->set_rpc_settings_coin_3($coins[2+$offset]["rpcsettings"]["user"],$coins[2+$offset]["rpcsettings"]["pass"],$coins[2+$offset]["rpcsettings"]["host"],$coins[2+$offset]["rpcsettings"]["port"],$coins[2+$offset]["rpcsettings"]["walletpassphrase"],$coins[2+$offset]["rpcsettings"]["walletpassphrase_timeout"]);
 		}
-		$this->w_coins_settings=$w_coins_settings;
+		$this->w_coins_settings=array($w_coins_settings);
 		return array($w_coins_settings);
 	}
 	
@@ -178,9 +178,9 @@ class my_all_coins
 	public function get_last_w_coins_settings($startoffset = 0)
 	{
 		if($this->w_coins_settings==false) {
-			$this->get_w_coins_settings($startoffset);
+			$this->w_coins_settings=$this->get_w_coins_settings($startoffset);
 		}
-		return array($this->w_coins_settings);
+		return $this->w_coins_settings;
 	}
 	
 	public static function get()
