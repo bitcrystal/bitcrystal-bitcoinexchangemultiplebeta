@@ -36,6 +36,7 @@ class w_coins {
 		$select_instance_id = 0;
 		$tmp = $this->my_all_coins->get_last_w_coins_settings();
 		$this->w_coins_settings = $tmp[0];
+		print_r($this->w_coins_settings);
 		$tmp = $this->my_all_coins->getCoins();
 		$this->coins = $tmp[0];
 		$tmp = $this->my_all_coins->getCoinsNames();
@@ -44,7 +45,7 @@ class w_coins {
 		$this->coins_names_prefix = $tmp[0];
 		$this->coins_count=count($this->coins_names);
 		
-		$this->my_w = $this->w_coins_settings[0];
+		$this->my_w = new w_coins_settings();
 		$this->coins["create_feebee_account"]=$this->my_w->coins["create_feebee_account"];
 		
 		$this->coins_names[0]=$this->my_w->coins["coin_name_1"];
