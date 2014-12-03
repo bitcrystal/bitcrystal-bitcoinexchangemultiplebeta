@@ -127,15 +127,15 @@ class my_all_coins
 		{
 			$offset = $i*3;
 			$w_coins_settings[$i]=new w_coins_settings();
-			$w_coins_settings[$i]->set_names($coins_names[0+$offset],$coins_names[1+$offset],$coins_names[2+$offset]);
-			$w_coins_settings[$i]->set_prefixes($coins_names_prefix[0+$offset],$coins_names_prefix[1+$offset],$coins_names_prefix[2+$offset]);
-			$w_coins_settings[$i]->set_fees($coins[0+$offset]["fee"],$coins[1+$offset]["fee"],$coins[2+$offset]["fee"]);
-			$w_coins_settings[$i]->set_feebees($coins[0+$offset]["feebee"],$coins[1+$offset]["feebee"],$coins[2+$offset]["feebee"]);
-			$w_coins_settings[$i]->set_buy_fees($coins[0+$offset]["buy_fee"],$coins[1+$offset]["buy_fee"],$coins[2+$offset]["buy_fee"]);
-			$w_coins_settings[$i]->set_sell_fees($coins[0+$offset]["sell_fee"],$coins[1+$offset]["sell_fee"],$coins[2+$offset]["sell_fee"]);
-			$w_coins_settings[$i]->set_rpc_settings_coin_1($coins[0+$offset]["rpcsettings"]["user"],$coins[0+$offset]["rpcsettings"]["pass"],$coins[0+$offset]["rpcsettings"]["host"],$coins[0+$offset]["rpcsettings"]["port"],$coins[0+$offset]["rpcsettings"]["walletpassphrase"],$coins[0+$offset]["rpcsettings"]["walletpassphrase_timeout"]);
-			$w_coins_settings[$i]->set_rpc_settings_coin_2($coins[1+$offset]["rpcsettings"]["user"],$coins[1+$offset]["rpcsettings"]["pass"],$coins[1+$offset]["rpcsettings"]["host"],$coins[1+$offset]["rpcsettings"]["port"],$coins[1+$offset]["rpcsettings"]["walletpassphrase"],$coins[1+$offset]["rpcsettings"]["walletpassphrase_timeout"]);
-			$w_coins_settings[$i]->set_rpc_settings_coin_3($coins[2+$offset]["rpcsettings"]["user"],$coins[2+$offset]["rpcsettings"]["pass"],$coins[2+$offset]["rpcsettings"]["host"],$coins[2+$offset]["rpcsettings"]["port"],$coins[2+$offset]["rpcsettings"]["walletpassphrase"],$coins[2+$offset]["rpcsettings"]["walletpassphrase_timeout"]);
+			$w_coins_settings[$i]->set_names($this->coins_names[0+$offset],$this->coins_names[1+$offset],$this->coins_names[2+$offset]);
+			$w_coins_settings[$i]->set_prefixes($this->coins_names_prefix[0+$offset],$this->coins_names_prefix[1+$offset],$this->coins_names_prefix[2+$offset]);
+			$w_coins_settings[$i]->set_fees($this->coins[0+$offset]["fee"],$this->coins[1+$offset]["fee"],$this->coins[2+$offset]["fee"]);
+			$w_coins_settings[$i]->set_feebees($this->coins[0+$offset]["feebee"],$this->coins[1+$offset]["feebee"],$this->coins[2+$offset]["feebee"]);
+			$w_coins_settings[$i]->set_buy_fees($this->coins[0+$offset]["buy_fee"],$this->coins[1+$offset]["buy_fee"],$this->coins[2+$offset]["buy_fee"]);
+			$w_coins_settings[$i]->set_sell_fees($this->coins[0+$offset]["sell_fee"],$this->coins[1+$offset]["sell_fee"],$this->coins[2+$offset]["sell_fee"]);
+			$w_coins_settings[$i]->set_rpc_settings_coin_1($this->coins[0+$offset]["rpcsettings"]["user"],$this->coins[0+$offset]["rpcsettings"]["pass"],$this->coins[0+$offset]["rpcsettings"]["host"],$this->coins[0+$offset]["rpcsettings"]["port"],$this->coins[0+$offset]["rpcsettings"]["walletpassphrase"],$this->coins[0+$offset]["rpcsettings"]["walletpassphrase_timeout"]);
+			$w_coins_settings[$i]->set_rpc_settings_coin_2($this->coins[1+$offset]["rpcsettings"]["user"],$this->coins[1+$offset]["rpcsettings"]["pass"],$this->coins[1+$offset]["rpcsettings"]["host"],$this->coins[1+$offset]["rpcsettings"]["port"],$this->coins[1+$offset]["rpcsettings"]["walletpassphrase"],$this->coins[1+$offset]["rpcsettings"]["walletpassphrase_timeout"]);
+			$w_coins_settings[$i]->set_rpc_settings_coin_3($this->coins[2+$offset]["rpcsettings"]["user"],$this->coins[2+$offset]["rpcsettings"]["pass"],$this->coins[2+$offset]["rpcsettings"]["host"],$this->coins[2+$offset]["rpcsettings"]["port"],$this->coins[2+$offset]["rpcsettings"]["walletpassphrase"],$this->coins[2+$offset]["rpcsettings"]["walletpassphrase_timeout"]);
 		}
 		$this->w_coins_settings=array($w_coins_settings);
 		return array($w_coins_settings);
