@@ -3,6 +3,7 @@ require_once 'jsonRPCClient.php';
 require_once 'w_coins_settings.php';
 require_once 'my_all_coins.php';
 class w_coins {
+	private $my_all_coins;
 	private $my_w;
 	public $coins_names;
 	public $coins_names_prefix;
@@ -25,6 +26,10 @@ class w_coins {
 	private static $SINGLETON = NULL;
 	
 	private function __construct() {
+		$this->my_all_coins=my_all_coins::get();
+		$this->my_all_coins->add("Bitcoin");
+		$this->my_all_coins->add("Bitcrystal");
+		$this->my_all_coins->add("Bitcrystalx");
 		$this->setFeeBeeAccount(false);
 		$instance_id = 0;
 		$select_instance_id = 0;
@@ -736,12 +741,12 @@ class w_coins {
 	
 	public function getFeeBeeAccount()
 	{
-		return $my_all_coins->getFeeBeeAccount();
+		return $this->my_all_coins->getFeeBeeAccount();
 	}
 	
 	public function setFeeBeeAccount($set)
 	{
-		$my_all_coins->setFeeBeeAccount($set);
+		$this->my_all_coins->setFeeBeeAccount($set);
 	}
 	
 	public static function get()
