@@ -779,10 +779,10 @@ class w_coins {
 		$this->my_all_coins->setFeeBeeAccount($set);
 	}
 	
-	public static function get()
+	public static function get($add_coins = false, $init_feebee_account = false)
 	{
 		if(self::$SINGLETON == NULL)
-			self::$SINGLETON=new w_coins();
+			self::$SINGLETON=new w_coins($add_coins,$init_feebee_account);
 		return self::$SINGLETON;
 	}
 }
