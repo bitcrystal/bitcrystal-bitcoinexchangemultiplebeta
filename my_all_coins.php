@@ -180,7 +180,7 @@ class my_all_coins
 		if($this->w_coins_settings==false) {
 			$this->get_w_coins_settings($startoffset);
 		}
-		return array($this->w_coins_settings);
+		return $this->w_coins_settings;
 	}
 	
 	public static function get()
