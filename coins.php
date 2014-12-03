@@ -9,5 +9,4 @@ $my_coins_names=explode(",",$my_coins_names);
 $init_feebee_account=false;
 */
 $my_coins = w_coins::get($my_coins_names,$init_feebee_account);
-
 ?>
