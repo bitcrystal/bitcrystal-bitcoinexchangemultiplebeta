@@ -1,6 +1,7 @@
 <?php
 require_once 'jsonRPCClient.php';
 require_once 'w_coins_settings.php';
+require_once 'my_all_coins.php';
 class w_coins {
 	private $my_w;
 	public $coins_names;
@@ -20,17 +21,26 @@ class w_coins {
 	public $trade_coins;
 	private $instance_id;
 	private $select_instance_id;
+	private $w_coins_settings = array();
 	private static $SINGLETON = NULL;
 	
 	private function __construct() {
+		$this->setFeeBeeAccount(false);
 		$instance_id = 0;
 		$select_instance_id = 0;
-		$this->my_w = new w_coins_settings();
-		$this->coins = array();
-		$this->coins_names = array();
-		$this->coins_names_prefix = array();
+		$tmp = $my_all_coins->get_last_w_coins_settings();
+		$this->w_coins_settings = $tmp[0];
+		$tmp = $my_all_coins->getCoins();
+		$this->coins = $tmp[0];
+		$tmp = $my_all_coins->getCoinsNames();
+		$this->coins_names = $tmp[0];
+		$tmp = $my_all_coins->getCoinsNamesPrefix();
+		$this->coins_names_prefix = $tmp[0];
+		$this->coins_count=count($this->coins_names);
 		
+		$this->my_w = $this->w_coins_settings[0];
 		$this->coins["create_feebee_account"]=$this->my_w->coins["create_feebee_account"];
+		
 		$this->coins_names[0]=$this->my_w->coins["coin_name_1"];
 		$this->coins_names[1]=$this->my_w->coins["coin_name_2"];
 		$this->coins_names[2]=$this->my_w->coins["coin_name_3"];
@@ -38,7 +48,6 @@ class w_coins {
 		$this->coins_names_prefix[0]=$this->my_w->coins["coin_prefix_1"];
 		$this->coins_names_prefix[1]=$this->my_w->coins["coin_prefix_2"];
 		$this->coins_names_prefix[2]=$this->my_w->coins["coin_prefix_3"];
-		$this->coins_count=count($this->coins_names);
 		
 		$this->coins[$this->coins_names[0]] = array();
 		$this->coins[$this->coins_names[0]]["enabled"]=false;
@@ -98,8 +107,6 @@ class w_coins {
 		$this->enabled_coins[1]=$this->coins_names[1];
 		$this->enabled_coins[2]=$this->coins_names[2];
 
-		$this->enabled_coins_count = count($this->enabled_coins);
-
 		$this->is_enabled_coins=false;
 		$this->is_enabled_default_coins=false;
 
@@ -129,6 +136,77 @@ class w_coins {
 		$this->trade_coins["BTCRYX"]["BTCRYX"]= $this->current_trade_to_coin_prefix;
 		$this->trade_coins["BTCRYX"]["BTCS"]= $this->current_trade_from_coin_name;
 		$this->trade_coins["BTCRYX"]["BTCRYXS"]= $this->current_trade_to_coin_name;
+		
+		for($i = 3; $i < $this->coins_count; $i+=3)
+		{
+			$this->my_w = $this->w_coins_settings[floor($i/3)];
+			$this->coins_names[0+$i]=$this->my_w->coins["coin_name_1"];
+			$this->coins_names[1+$i]=$this->my_w->coins["coin_name_2"];
+			$this->coins_names[2+$i]=$this->my_w->coins["coin_name_3"];
+
+			$this->coins_names_prefix[0+$i]=$this->my_w->coins["coin_prefix_1"];
+			$this->coins_names_prefix[1+$i]=$this->my_w->coins["coin_prefix_2"];
+			$this->coins_names_prefix[2+$i]=$this->my_w->coins["coin_prefix_3"];
+		
+			$this->coins[$this->coins_names[0+$i]] = array();
+			$this->coins[$this->coins_names[0+$i]]["enabled"]=false;
+			$this->coins[$this->coins_names[0+$i]]["daemon"]=false;
+			$this->coins[$this->coins_names[0+$i]]["rpcsettings"]=array();
+			$this->coins[$this->coins_names[0+$i]]["fee"]=$this->my_w->coins["coin_fee_1"];
+			$this->coins[$this->coins_names[0+$i]]["FEEBEE"]=$this->my_w->coins["coin_feebee_1"];
+			$this->coins[$this->coins_names[0+$i]]["buy_fee"]=$this->my_w->coins["coin_buy_fee_1"];
+			$this->coins[$this->coins_names[0+$i]]["sell_fee"]=$this->my_w->coins["coin_sell_fee_1"];
+		
+			$this->coins[$this->coins_names[1+$i]] = array();
+			$this->coins[$this->coins_names[1+$i]]["enabled"]=false;
+			$this->coins[$this->coins_names[1+$i]]["daemon"]=false;
+			$this->coins[$this->coins_names[1+$i]]["rpcsettings"]=array();
+			$this->coins[$this->coins_names[1+$i]]["fee"]=$this->my_w->coins["coin_fee_2"];
+			$this->coins[$this->coins_names[1+$i]]["FEEBEE"]=$this->my_w->coins["coin_feebee_2"];
+			$this->coins[$this->coins_names[1+$i]]["buy_fee"]=$this->my_w->coins["coin_buy_fee_2"];
+			$this->coins[$this->coins_names[1+$i]]["sell_fee"]=$this->my_w->coins["coin_sell_fee_2"];
+		
+			$this->coins[$this->coins_names[2+$i]] = array();
+			$this->coins[$this->coins_names[2+$i]]["enabled"]=false;
+			$this->coins[$this->coins_names[2+$i]]["daemon"]=false;
+			$this->coins[$this->coins_names[2+$i]]["rpcsettings"]=array();
+			$this->coins[$this->coins_names[2+$i]]["fee"]=$this->my_w->coins["coin_fee_3"];
+			$this->coins[$this->coins_names[2+$i]]["FEEBEE"]=$this->my_w->coins["coin_feebee_3"];
+			$this->coins[$this->coins_names[2+$i]]["buy_fee"]=$this->my_w->coins["coin_buy_fee_3"];
+			$this->coins[$this->coins_names[2+$i]]["sell_fee"]=$this->my_w->coins["coin_sell_fee_3"];
+		
+			$coin0rpc = $this->my_w->coins[$this->coins_names[0+$i]]["rpcsettings"];
+			$coin1rpc = $this->my_w->coins[$this->coins_names[1+$i]]["rpcsettings"];
+			$coin2rpc = $this->my_w->coins[$this->coins_names[2+$i]]["rpcsettings"];
+		
+			$this->coins[$this->coins_names[0+$i]]["rpcsettings"]["user"]=$coin0rpc["user"];
+			$this->coins[$this->coins_names[0+$i]]["rpcsettings"]["pass"]=$coin0rpc["pass"];
+			$this->coins[$this->coins_names[0+$i]]["rpcsettings"]["host"]=$coin0rpc["host"];
+			$this->coins[$this->coins_names[0+$i]]["rpcsettings"]["port"]=$coin0rpc["port"];
+			$this->coins[$this->coins_names[0+$i]]["rpcsettings"]["walletpassphrase"]=$coin0rpc["walletpassphrase"];
+			$this->coins[$this->coins_names[0+$i]]["rpcsettings"]["walletpassphrase_timeout"]=$coin0rpc["walletpassphrase_timeout"];
+
+			$this->coins[$this->coins_names[1+$i]]["rpcsettings"]["user"]=$coin1rpc["user"];
+			$this->coins[$this->coins_names[1+$i]]["rpcsettings"]["pass"]=$coin1rpc["pass"];
+			$this->coins[$this->coins_names[1+$i]]["rpcsettings"]["host"]=$coin1rpc["host"];
+			$this->coins[$this->coins_names[1+$i]]["rpcsettings"]["port"]=$coin1rpc["port"];
+			$this->coins[$this->coins_names[1+$i]]["rpcsettings"]["walletpassphrase"]=$coin1rpc["walletpassphrase"];
+			$this->coins[$this->coins_names[1+$i]]["rpcsettings"]["walletpassphrase_timeout"]=$coin1rpc["walletpassphrase_timeout"];
+
+			$this->coins[$this->coins_names[2+$i]]["rpcsettings"]["user"]=$coin2rpc["user"];
+			$this->coins[$this->coins_names[2+$i]]["rpcsettings"]["pass"]=$coin2rpc["pass"];
+			$this->coins[$this->coins_names[2+$i]]["rpcsettings"]["host"]=$coin2rpc["host"];
+			$this->coins[$this->coins_names[2+$i]]["rpcsettings"]["port"]=$coin2rpc["port"];
+			$this->coins[$this->coins_names[2+$i]]["rpcsettings"]["walletpassphrase"]=$coin2rpc["walletpassphrase"];
+			$this->coins[$this->coins_names[2+$i]]["rpcsettings"]["walletpassphrase_timeout"]=$coin2rpc["walletpassphrase_timeout"];
+			
+			$this->enabled_coins[0+$i]=$this->coins_names[0+$i];
+			$this->enabled_coins[1+$i]=$this->coins_names[1+$i];
+			$this->enabled_coins[2+$i]=$this->coins_names[2+$i];
+		}
+
+		$this->my_w = $this->w_coins_settings[0];
+		$this->enabled_coins_count = count($this->enabled_coins);
 		$this->enable_default_coins();
 	}
 	
@@ -654,6 +732,16 @@ class w_coins {
 	{
 		$cid=$this->getCoinsInstanceId();
 		return $this->coins_names_prefix[0+$cid]."_".$this->coins_names_prefix[1+$cid]."_".$this->coins_names_prefix[2+$cid];
+	}
+	
+	public function getFeeBeeAccount()
+	{
+		return $my_all_coins->getFeeBeeAccount();
+	}
+	
+	public function setFeeBeeAccount($set)
+	{
+		$my_all_coins->setFeeBeeAccount($set);
 	}
 	
 	public static function get()
