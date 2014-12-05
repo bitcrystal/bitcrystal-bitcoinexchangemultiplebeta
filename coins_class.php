@@ -527,6 +527,10 @@ class w_coins {
 		if($website==NULL)
 			$website = basename($_SERVER['PHP_SELF']);
 		$iid="";
+		if($this->coins_count>3)
+		$set="0";
+		else
+		$set="20";
 		for($i=0;$i < $this->coins_count; $i+=3)
 		{
 			/*if(floor($i/3)>0)
@@ -534,7 +538,7 @@ class w_coins {
 				else
 					$iid = "";*/
 			echo "<td><div class=\"coin-button\"><a href=\"".$website."?c=".$this->coins_names_prefix[0+$i]."_".$this->coins_names_prefix[1+$i].$iid."\" class=\"coin-link\">".$this->coins_names_prefix[1+$i]."/".$this->coins_names_prefix[0+$i]."</a></div></td>";
-			echo "<td style=\"padding-left: 20px;\"><div class=\"coin-button\"><a href=\"".$website."?c=".$this->coins_names_prefix[2+$i]."_".$this->coins_names_prefix[1+$i].$iid."\" class=\"coin-link\">".$this->coins_names_prefix[1+$i]."/".$this->coins_names_prefix[2+$i]."</a></div></td>";
+			echo "<td style=\"padding-left: ".$set."px;\"><div class=\"coin-button\"><a href=\"".$website."?c=".$this->coins_names_prefix[2+$i]."_".$this->coins_names_prefix[1+$i].$iid."\" class=\"coin-link\">".$this->coins_names_prefix[1+$i]."/".$this->coins_names_prefix[2+$i]."</a></div></td>";
 		}
 	}
 	
@@ -651,7 +655,7 @@ class w_coins {
 	public function outputBalances($user_session)
 	{
 		$id=$this->getInstanceId();
-		$i=$this->getCoinsSelectInstanceId();
+		$i=$this->getCoinsInstanceId();
 		//$this->setSelectInstanceId($id);
 		if(!$user_session) {
 			echo '<b>Finances:</b><p></p>
@@ -814,7 +818,8 @@ class w_coins {
 	
 	public function getTradeId()
 	{
-		$cid=$this->getCoinsInstanceId();
+		//$cid=$this->getCoinsInstanceId();
+		$cid=0;
 		return $this->coins_names_prefix[0+$cid]."_".$this->coins_names_prefix[1+$cid]."_".$this->coins_names_prefix[2+$cid];
 	}
 	
