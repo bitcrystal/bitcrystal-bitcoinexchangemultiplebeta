@@ -9,6 +9,7 @@ $withdraw_withdraw = security($_POST['action']);
 $withdraw_amount = security($_POST['amount']);
 $withdraw_address = security($_POST['address']);
 $iid = security($_POST['iid']);
+echo $iid;
 if(!$iid) {
 	$my_coins->setSelectInstanceId($my_coins->getInstanceId());
 } else {
