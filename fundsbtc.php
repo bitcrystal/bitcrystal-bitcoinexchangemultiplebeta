@@ -8,14 +8,19 @@ if($Logged_In!==7) {
 $withdraw_withdraw = security($_POST['action']);
 $withdraw_amount = security($_POST['amount']);
 $withdraw_address = security($_POST['address']);
-$iid = security($_GET['iid']);
+$iid = security($_POST['iid']);
 if(!$iid) {
-	$my_coins->setSelectInstanceId(0);
+	$my_coins->setSelectInstanceId($my_coins->getInstanceId());
 } else {
-	$my_coins->setSelectInstanceId($iid);
+	if($iid!=$my_coins->getSelectInstanceId())
+	{
+		header("Location: home.php");
+	}
 }
+
 $iid = $my_coins->getSelectInstanceId();
 $cid = $my_coins->getCoinsSelectInstanceId();
+
 if($withdraw_withdraw=="withdraw") {
    if($withdraw_address) {
       if($withdraw_amount) {
@@ -102,6 +107,7 @@ if($withdraw_withdraw=="withdraw") {
          <td align="center" valign="top" style="padding: 5px;" nowrap>
             <form action="fundsbtc.php" method="POST">
             <input type="hidden" name="action" value="withdraw">
+			<input type="hidden" name="iid" value="<?php echo $iid; ?>">
             <table>
                <tr>
                   <td colspan="2" align="left" nowrap>

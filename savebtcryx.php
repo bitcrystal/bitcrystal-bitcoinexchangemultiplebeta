@@ -6,12 +6,16 @@ if($Logged_In!==7) {
    header("Location: index.php");
 }
 $savemoney = security($_POST['action']);
-$iid = security($_GET['iid']);
+$iid = security($_POST['iid']);
 if(!$iid) {
-	$my_coins->setSelectInstanceId(0);
+	$my_coins->setSelectInstanceId($my_coins->getInstanceId());
 } else {
-	$my_coins->setSelectInstanceId($iid);
+	if($iid!=$my_coins->getSelectInstanceId())
+	{
+		header("Location: home.php");
+	}
 }
+
 $iid = $my_coins->getSelectInstanceId();
 $cid = $my_coins->getCoinsSelectInstanceId();
 if($savemoney=="savemoney") {
@@ -82,10 +86,11 @@ if($savemoney=="savemoney") {
          <td align="center" valign="top" style="padding: 5px;" nowrap>
             <form action="savebtcryx.php" method="POST">
             <input type="hidden" name="action" value="savemoney">
-            <table>
+            <input type="hidden" name="iid" value="<?php echo $iid; ?>">
+			<table>
                <tr>
                   <td colspan="2" align="left" nowrap>
-                  <b>Save Money(<?php $id=2; echo $my_coins->coins_names_prefix[$id]?>):</b>
+                  <b>Save Money(<?php $id=2+$cid; echo $my_coins->coins_names_prefix[$id]?>):</b>
                   </td>
                </tr><tr>
                   <td colspan="2" align="right" nowrap><input type="submit" class="button" name="submit" value="Save"></td>

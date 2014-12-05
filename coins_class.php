@@ -599,7 +599,7 @@ class w_coins {
 		return $trade_coin;
 	}
 	
-	public function outputBalances($user_session)
+	public function outputBalancesOld($user_session)
 	{
 		if(!$user_session) {
 			echo '<b>Finances:</b><p></p>
@@ -648,10 +648,56 @@ class w_coins {
 		}
 	}
 	
+	public function outputBalances($user_session)
+	{
+		$id=$this->getInstanceId();
+		$i=$this->getCoinsSelectInstanceId();
+		//$this->setSelectInstanceId($id);
+		if(!$user_session) {
+			echo '<b>Finances:</b><p></p>
+			<table style="width: 100%;">
+			<tr>';
+				echo'
+					<td align="right" style="padding-left: 5px;" nowrap><a href="fundsbtc.php">'.$this->coins_names_prefix[0+$i].'</a></td>
+					<td align="right" style="padding-left: 5px;" nowrap><span id="balance-btc">?</span></td>
+					<td align="right" style="padding-left: 5px;" nowrap><a href="fundsbtcry.php">'.$this->coins_names_prefix[1+$i].'</a></td>
+					</tr><tr>
+						<td align="right" style="padding-left: 5px;" nowrap><span id="balance-btcry">?</span></td>
+					</tr><tr>
+						<td align="right" style="padding-left: 5px;" nowrap><a href="fundsbtcryx.php">'.$this->coins_names_prefix[2+$i].'</a></td>
+						<td align="right" style="padding-left: 5px;" nowrap><span id="balance-btcryx">?</span></td>
+					';
+			echo'</tr>
+				</table>';
+		} else {
+			echo '<b>Finances:</b><p></p>
+				<table style="width: 100%;">
+				<tr>';
+				echo'
+					<td align="right" style="padding-left: 5px;" nowrap><a href="fundsbtc.php">'.$this->coins_names_prefix[0+$i].'</a></td>
+					<td align="right" style="padding-left: 5px;" nowrap><span id="balance-btc">'.userbalance($user_session,$this->coins_names_prefix[0+$i]).'</span></td>
+					</tr><tr>
+						<td align="right" style="padding-left: 5px;" nowrap><a href="fundsbtcry.php">'.$this->coins_names_prefix[1+$i].'</a></td>
+						<td align="right" style="padding-left: 5px;" nowrap><span id="balance-btcry">'.userbalance($user_session,$this->coins_names_prefix[1+$i]).'</span></td>
+					</tr><tr>
+						<td align="right" style="padding-left: 5px;" nowrap><a href="fundsbtcryx.php">'.$this->coins_names_prefix[2+$i].'</a></td>
+						<td align="right" style="padding-left: 5px;" nowrap><span id="balance-btcryx">'.userbalance($user_session,$this->coins_names_prefix[2+$i]).'</span></td>
+					';
+				echo'
+				</tr>
+				</table>
+				';
+		}
+	}
+	
 	public function outputFooter($website = NULL)
 	{
 		if($website==NULL)
 			$website = basename($_SERVER['PHP_SELF']);
+		if($website!="home.php" && $website!="index.php" && $website!="market.php")
+		{
+			$website="home.php";
+		}
 		echo'<b>Trade Sections:</b> ';
 		$link = "";
 		$iid = "";
@@ -716,6 +762,7 @@ class w_coins {
 				$array[$j]["name"] = $this->coins_names[$i];
 				$array[$j]["prefix"] = $this->coins_names_prefix[$i];
 				$array[$j]["daemon"] = $this->coins[$this->coins_names[$i]]["daemon"];
+				$array[$j]["cid"] = $i;
 				$j++;
 			}
 		}
@@ -736,6 +783,7 @@ class w_coins {
 				$array[$j]["name"] = $this->coins_names[$i];
 				$array[$j]["prefix"] = $this->coins_names_prefix[$i];
 				$array[$j]["daemon"] = $this->coins[$this->coins_names[$i]]["daemon"];
+				$array[$j]["cid"] = $i;
 				$j++;
 			}
 		}
@@ -756,6 +804,7 @@ class w_coins {
 				$array[$j]["name"] = $this->coins_names[$i];
 				$array[$j]["prefix"] = $this->coins_names_prefix[$i];
 				$array[$j]["daemon"] = $this->coins[$this->coins_names[$i]]["daemon"];
+				$array[$j]["cid"] = $i;
 				$j++;
 			}
 		}
@@ -767,6 +816,26 @@ class w_coins {
 	{
 		$cid=$this->getCoinsInstanceId();
 		return $this->coins_names_prefix[0+$cid]."_".$this->coins_names_prefix[1+$cid]."_".$this->coins_names_prefix[2+$cid];
+	}
+	
+	
+	public function getWalletId($user_session, $cid)
+	{
+		$iid = floor($cid/3);
+		if($iid==0)
+			$wallet_id = "zellesExchange(".$user_session.")";
+		else
+			$wallet_id = "zellesExchange(".$user_session.",".$cid.")";
+		return $wallet_id;
+	}
+	
+	public function outputDepositWithdrawLink()
+	{
+		$id = $this->getInstanceId();
+		//$this->setSelectInstanceId($id);
+		$cid = $this->getCoinsInstanceId();
+		$link = '<td colspan="2" align="right" valign="top" style="font-weight: bold; padding: 5px;" nowrap>Deposit/Withdraw (<a href="fundsbtc.php">'.$this->coins_names_prefix[0+$cid].'</a>/<a href="fundsbtcry.php">'.$this->coins_names_prefix[1+$cid].'</a>/<a href="fundsbtcryx.php">'.$this->coins_names_prefix[2+$cid].'</a>)</td>';
+		echo $link;
 	}
 	
 	public function getFeeBeeAccount()

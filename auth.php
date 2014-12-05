@@ -57,13 +57,17 @@ if(!$user_session) {
    $Logged_In = 2;
 } else {
    $Logged_In = 7;
-   $wallet_id = "zellesExchange(".$user_session.")";
+   $Logged_In = 7;
+   //$wallet_id = "zellesExchange(".$user_session.")";
 	$string="";
 	$i=0;
 	for(;$i<$count_daemons;$i++)
 	{
+		$wallet_id = $my_coins->getWalletId($user_session,$Bitcoind[$i]["cid"]);
 		$Bitcoind_Account_Address[$i] = $Bitcoind[$i]["daemon"]->getaccountaddress($wallet_id);
+		$wallet_id = $my_coins->getWalletId($user_session,$Bitcrystald[$i]["cid"]);
 		$Bitcrystald_Account_Address[$i] = $Bitcrystald[$i]["daemon"]->getaccountaddress($wallet_id);
+		$wallet_id = $my_coins->getWalletId($user_session,$Bitcrystalxd[$i]["cid"]);
 		$Bitcrystalxd_Account_Address[$i] = $Bitcrystalxd[$i]["daemon"]->getaccountaddress($wallet_id);
 		$string=$string . "'".$Bitcoind_Account_Address[$i]."','".$Bitcrystald_Account_Address[$i]."','".$Bitcrystalxd_Account_Address[$i]."'";
 		if($i!=0&&$i+1<$count_daemons)
