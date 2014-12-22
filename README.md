@@ -6,3 +6,5 @@ A opensource exchange script for digital currencies like Bitcoin and other alt-c
 The trading section is not fully completed at this time. 
 
 Feel free to contribute
+
+Deprecated. Please look in the master_really_final branch.
