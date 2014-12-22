@@ -7,4 +7,4 @@ The trading section is fully completed at this time.
 
 Feel free to contribute
 
-The updated source is in the branch called master_really_final
+The updated source is the master_really_final branch
