@@ -13,6 +13,7 @@ if(!$user_session) {
 if($ajax_id=="buyorders") { require'ajax/buyorders.php'; }
 if($ajax_id=="sellorders") { require'ajax/sellorders.php'; }
 if($ajax_id=="orderspast") { require'ajax/orderspast.php'; }
+if($ajax_id=="orderscancel") { require'ajax/orderscancel.php'; }
 
 if($ajax_id=="stats") { require'ajax/stats.php'; }
 ?>
