@@ -199,7 +199,7 @@ class w_coins_settings
 	
 	public function set_rpc_settings_coin_3($rpc_user, $rpc_pass, $rpc_host, $rpc_port, $rpc_walletpassphrase="", $rpc_walletpassphrase_timeout=99999999)
 	{
-		$coin_name = $this->coins["coin_name_3"];
+		$coins_name = $this->coins["coin_name_3"];
 		
 		$this->coins[$coins_name]["rpcsettings"]["user"]=$rpc_user;
 		$this->coins[$coins_name]["rpcsettings"]["pass"]=$rpc_pass;

@@ -22,26 +22,22 @@ $Bitcoin_Can_Buy = satoshitrim(satoshitize($Bitcoin_Can_Buy));
 
 $cancel_type = security($_GET['type']);
 $cancel_order = security($_GET['cancel']);
+$delete_order = security($_GET['delete']);
+$processed = security($_GET['processed']);
 if($cancel_order) {
    if($cancel_type=="sell") {
-      $Query = mysql_query("SELECT id, username, amount FROM sell_orderbook WHERE id='$cancel_order' and username='$user_session' and trade_id = '".$coins_names_prefix[0]."_".$coins_names_prefix[1]."_".$coins_names_prefix[2]."' and trade_with='$BTCRYX' ORDER BY rate ASC LIMIT 1");
+      $Query = mysql_query("SELECT id, username, amount FROM sell_orderbook WHERE want='".$BTC."' and id='$cancel_order' and username='$user_session' and trade_id = '".$my_coins->getTradeId()."' and trade_with='$BTCRYX' and processed = '1' ORDER BY rate ASC LIMIT 1");
       while($Row = mysql_fetch_assoc($Query)) {
          $CURR_Selling_ID = $Row['id'];
          $CURR_Selling_Username = $Row['username'];
          $CURR_Selling_Amount = $Row['amount'];
       }
       if($user_session==$CURR_Selling_Username) {
-         $sql = "UPDATE sell_orderbook SET processed='3' WHERE id='$CURR_Selling_ID' and username='$user_session' and trade_id  = '".$coins_names_prefix[0]."_".$coins_names_prefix[1]."_".$coins_names_prefix[2]."' AND trade_with = '$BTCRYX'";
+         $sql = "UPDATE sell_orderbook SET processed='".time()."' WHERE want='".$BTC."' and id='$CURR_Selling_ID' and username='$user_session' and trade_id  = '".$my_coins->getTradeId()."' and trade_with = '$BTCRYX' and processed = '1'";
          $result = mysql_query($sql);
          if($result) {
-            $result = "";
-            $result = plusfunds($user_session,$BTCRYX,$CURR_Selling_Amount);
-            if($result) {
-               $Trade_Message = 'The order has been canceled.';
-               //header("Location: home.php");
-            } else {
-               $Trade_Message = 'System error.';
-            }
+            $Trade_Message = 'The order has been canceled.';
+			//header("Location: home.php");
          } else {
             $Trade_Message = 'System error.';
          }
@@ -50,7 +46,7 @@ if($cancel_order) {
       }
    } else {
       if($cancel_type=="buy") {
-         $Query = mysql_query("SELECT id, username, amount, rate FROM buy_orderbook WHERE id='$cancel_order' and username='$user_session' and trade_id = '".$coins_names_prefix[0]."_".$coins_names_prefix[1]."_".$coins_names_prefix[2]."' AND trade_with = '$BTCRYX' ORDER BY rate ASC LIMIT 1");
+         $Query = mysql_query("SELECT id, username, amount, rate FROM buy_orderbook WHERE want='".$BTC."' and id='$cancel_order' and username='$user_session' and trade_id = '".$my_coins->getTradeId()."' and trade_with = '$BTCRYX' and processed = '1' ORDER BY rate ASC LIMIT 1");
          while($Row = mysql_fetch_assoc($Query)) {
             $CURR_Selling_ID = $Row['id'];
             $CURR_Selling_Username = $Row['username'];
@@ -62,19 +58,77 @@ if($cancel_order) {
             $CURR_Selling_Amount = satoshitrim(satoshitize($CURR_Selling_Amount));
             $CURR_Selling_Amount = $Coin_A_Balance + $CURR_Selling_Amount;
             $CURR_Selling_Amount = satoshitrim(satoshitize($CURR_Selling_Amount));
-            $sql = "UPDATE buy_orderbook SET processed='3' WHERE id='$CURR_Selling_ID' and username='$user_session' and trade_id = '".$coins_names_prefix[0]."_".$coins_names_prefix[1]."_".$coins_names_prefix[2]."' AND trade_with = '$BTCRYX'";
+            $sql = "UPDATE buy_orderbook SET processed='".time()."' WHERE want='".$BTC."' and id='$CURR_Selling_ID' and username='$user_session' and trade_id = '".$my_coins->getTradeId()."' and trade_with = '$BTCRYX' and processed = '1'";
             $result = mysql_query($sql);
             if($result) {
-               $result = plusfunds($user_session,$BTC,$CURR_Selling_Amount);
-               if($result) {
-                  $Trade_Message = 'The order has been canceled.';
-                  //header("Location: home.php");
-               } else {
-                  $Trade_Message = 'System error.';
-               }
-            } else {
+                $Trade_Message = 'The order has been canceled.';
+                //header("Location: home.php");
+			} else {
                $Trade_Message = 'System error.';
             }
+         } else {
+            $Trade_Message = 'Illegal Operation.';
+         }
+      } else {
+         $Trade_Message = 'Illegal Operation.';
+      }
+   }
+} else if($delete_order) {
+   if($cancel_type=="sell") {
+      $Query = mysql_query("SELECT id, username, amount, processed FROM sell_orderbook WHERE want='".$BTC."' and id='$delete_order' and username='$user_session' and trade_id = '".$my_coins->getTradeId()."' and trade_with='$BTCRYX' and processed = '".$processed."' ORDER BY rate ASC LIMIT 1");
+      while($Row = mysql_fetch_assoc($Query)) {
+         $CURR_Selling_ID = $Row['id'];
+         $CURR_Selling_Username = $Row['username'];
+         $CURR_Selling_Amount = $Row['amount'];
+		 $Orders_Processed=$Row['processed'];
+      }
+      if($user_session==$CURR_Selling_Username&&$Orders_Processed>1000) {
+         $sql = "DELETE FROM sell_orderbook WHERE want='".$BTC."' and id='$CURR_Selling_ID' and username='$user_session' and trade_id  = '".$my_coins->getTradeId()."' and trade_with = '$BTCRYX' and processed = '".$Orders_Processed."'";
+         $result = mysql_query($sql);
+         if($result) {
+			$result = "";
+			$result = plusfunds($user_session,$BTCRYX,$CURR_Selling_Amount);
+            if($result) {
+                $Trade_Message = 'The order has been deleted.';
+                //header("Location: home.php");
+			} else {
+                $Trade_Message = 'System error.';
+            }
+         } else {
+            $Trade_Message = 'System error.';
+         }
+      } else {
+         $Trade_Message = 'Illegal Operation.';
+      }
+   } else {
+      if($cancel_type=="buy") {
+         $Query = mysql_query("SELECT id, username, amount, rate, processed FROM buy_orderbook WHERE want='".$BTC."' and id='$delete_order' and username='$user_session' and trade_id = '".$my_coins->getTradeId()."' and trade_with = '$BTCRYX' and processed = '".$processed."' ORDER BY rate ASC LIMIT 1");
+         while($Row = mysql_fetch_assoc($Query)) {
+            $CURR_Selling_ID = $Row['id'];
+            $CURR_Selling_Username = $Row['username'];
+            $CURR_Selling_Amount = $Row['amount'];
+            $CURR_Selling_Rate = $Row['rate'];
+			$Orders_Processed = $Row['processed'];
+         }
+         if($user_session==$CURR_Selling_Username&&$Orders_Processed>1000) {
+            $CURR_Selling_Amount = $CURR_Selling_Amount * $CURR_Selling_Rate;
+            $CURR_Selling_Amount = satoshitrim(satoshitize($CURR_Selling_Amount));
+            //$CURR_Selling_Amount = $Coin_A_Balance + $CURR_Selling_Amount;
+            //$CURR_Selling_Amount = satoshitrim(satoshitize($CURR_Selling_Amount));
+            $sql = "DELETE FROM buy_orderbook WHERE want='".$BTC."' and id='$CURR_Selling_ID' and username='$user_session' and trade_id = '".$my_coins->getTradeId()."' and trade_with = '$BTCRYX' and processed = '".$Orders_Processed."'";
+            $result = mysql_query($sql);
+            if($result) {
+				$result = "";
+				$result = plusfunds($user_session,$BTC,$CURR_Selling_Amount);
+				if($result) {
+					$Trade_Message = 'The order has been deleted.';
+					//header("Location: home.php");
+				} else {
+					$Trade_Message = 'System error.';
+				}
+			} else {
+				$Trade_Message = 'System error.';
+			}
          } else {
             $Trade_Message = 'Illegal Operation.';
          }
@@ -99,7 +153,7 @@ if($PST_Order_Action=="buy"){
             if($PST_Order_Sub_Total!=0) {
                if($Selling_Rate>=$PST_Order_Rate) {
                   if($Selling_Rate===$PST_Order_Rate) {
-                     $Query = mysql_query("SELECT id, username, amount, rate FROM sell_orderbook WHERE want='$BTC' and processed='1' and trade_id = '".$coins_names_prefix[0]."_".$coins_names_prefix[1]."_".$coins_names_prefix[2]."' AND trade_with = '$BTCRYX' ORDER BY rate DESC LIMIT 1");
+                     $Query = mysql_query("SELECT id, username, amount, rate FROM sell_orderbook WHERE want='$BTC' and processed='1' and trade_id = '".$my_coins->getTradeId()."' AND trade_with = '$BTCRYX' ORDER BY rate DESC LIMIT 1");
                      while($Row = mysql_fetch_assoc($Query)) {
                         $CURR_Selling_ID = $Row['id'];
                         $CURR_Selling_Username = $Row['username'];
@@ -166,7 +220,7 @@ if($PST_Order_Action=="sell") {
             if($PST_Order_Sub_Total!=0) {
                if($Buying_Rate>=$PST_Order_Rate) {
                   if($Buying_Rate===$PST_Order_Rate) {
-                     $Query = mysql_query("SELECT id, username, amount, rate FROM buy_orderbook WHERE want='$BTC' and processed='1' and trade_id = '".$coins_names_prefix[0]."_".$coins_names_prefix[1]."_".$coins_names_prefix[2]."' AND trade_with = '$BTCRYX' ORDER BY rate ASC LIMIT 1");
+                     $Query = mysql_query("SELECT id, username, amount, rate FROM buy_orderbook WHERE want='$BTC' and processed='1' and trade_id = '".$my_coins->getTradeId()."' AND trade_with = '$BTCRYX' ORDER BY rate ASC LIMIT 1");
                      while($Row = mysql_fetch_assoc($Query)) {
                         $CURR_Selling_ID = $Row['id'];
                         $CURR_Selling_Username = $Row['username'];
@@ -215,7 +269,7 @@ if($PST_Order_Action=="sell") {
 }
 if($Trade_Message)
 {
-	header("Refresh: 5;");
+	header("Refresh: 5; url=home.php");
 }
 ?>
 <html>
@@ -226,10 +280,13 @@ if($Trade_Message)
    <script src="js/jquery-1.9.1.js"></script>
    <script type="text/javascript">
       $(document).ready(function () {
+	    setInterval(function () {
+            $("#orderscancel").load("ajax.php?id=orderscancel");
+		}, 1000);
          setInterval(function () {
             $("#balances").load("ajax.php?id=balances");
             $("#pending-deposits").load("ajax.php?id=pending-deposits");
-         }, 30000);
+		}, 30000);
         setInterval(function () {
             $("#orderspast").load("ajax.php?id=orderspast");
             $("#buyorders").load("ajax.php?id=buyorders");
@@ -447,7 +504,7 @@ if($Trade_Message)
          </td>
       </tr><tr>
          <td colspan="2" align="left" valign="top" style="padding: 5px;" nowrap>
-            <span id="orderspast"><?php require"ajax/orderspast.php"; ?></span>
+            <span id="orderscancel"><?php require"ajax/orderscancel.php"; ?></span>
          </td>
       </tr>
    </table>

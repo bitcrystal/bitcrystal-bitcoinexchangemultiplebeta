@@ -31,7 +31,7 @@ if(isset($_GET['recover']) && isset($_GET['username']) && isset($_GET['id']) )
 		$recover = $_GET['recover'];
 		$username = $_GET['username'];
 		$id = $_GET['id'];
-		$sql = "SELECT * FROM users WHERE username='$username' AND trade_id = '".$my_coins->getTradeId()."'";
+		$sql = "SELECT * FROM users WHERE username='$username' AND trade_id = '".$my_coins->getTradeIdAccount()."'";
         $result = mysql_query($sql);
 		if($result)
 		{
@@ -42,7 +42,7 @@ if(isset($_GET['recover']) && isset($_GET['username']) && isset($_GET['id']) )
 				$my_id=md5(md5($Row['email'].$Row['username'].$Row['password']));
 				if($my_id==$id)
 				{
-					$sql = "UPDATE users SET password = '".md5($Row['password'])."' WHERE username = '".$Row['username']."' AND trade_id = '".$my_coins->getTradeId()."';";
+					$sql = "UPDATE users SET password = '".md5($Row['password'])."' WHERE username = '".$Row['username']."' AND trade_id = '".$my_coins->getTradeIdAccount()."';";
 					if(mysql_query($sql))
 					{
 						mail($Row['email'], "New Password for Werris/Zelles Exchange Service","The new password for the user ".$Row['username']." is ".$Row['password']);
@@ -72,7 +72,7 @@ $email_repeat = security($_POST['email_repeat']);
 $form_action = security($_POST['action']);
 if($form_action=="forgot") {
 	if($email) {
-		$sql = "SELECT * FROM users WHERE email='$email' AND trade_id = '".$my_coins->getTradeId()."'";
+		$sql = "SELECT * FROM users WHERE email='$email' AND trade_id = '".$my_coins->getTradeIdAccount()."'";
         $result = mysql_query($sql);
 		if($result)
 		{
@@ -100,11 +100,11 @@ if($form_action=="login") {
       if($myusername) {
          if($mypassword) {
             $mypassword2 = md5($mypassword);
-            $sql = "SELECT * FROM users WHERE username='$myusername' AND trade_id = '".$my_coins->getTradeId()."'";
+            $sql = "SELECT * FROM users WHERE username='$myusername' AND trade_id = '".$my_coins->getTradeIdAccount()."'";
             $result = mysql_query($sql);
             $count = mysql_num_rows($result);
             if($count==1) {
-               $Pass_Query = mysql_query("SELECT * FROM users WHERE username='$myusername' AND trade_id = '".$my_coins->getTradeId()."'");
+               $Pass_Query = mysql_query("SELECT * FROM users WHERE username='$myusername' AND trade_id = '".$my_coins->getTradeIdAccount()."'");
                while($Pass_Row = mysql_fetch_assoc($Pass_Query)) {
                   $db_Login_Pass_Check = $Pass_Row['password'];
                   if($mypassword2==$db_Login_Pass_Check) {
@@ -169,7 +169,7 @@ if($form_action=="register") {
 				{
 					$return_error = "Email did not match";
 				}
-				$SQL = "SELECT * FROM users WHERE email='$email' AND trade_id = '".$my_coins->getTradeId()."'";
+				$SQL = "SELECT * FROM users WHERE email='$email' AND trade_id = '".$my_coins->getTradeIdAccount()."'";
 				$result=mysql_query($SQL);
 				$num_rows = mysql_num_rows($result);
 				if($num_rows==1) {
@@ -182,14 +182,14 @@ if($form_action=="register") {
             if($return_error == "") {
                if($db_found) {
                   $mypassword = md5($mypassword);
-                  $SQL = "SELECT * FROM users WHERE username='$myusername' AND trade_id = '".$my_coins->getTradeId()."'";
+                  $SQL = "SELECT * FROM users WHERE username='$myusername' AND trade_id = '".$my_coins->getTradeIdAccount()."'";
                   $result = mysql_query($SQL);
                   $num_rows = mysql_num_rows($result);
                   if($num_rows==1) {
                      $return_error = "Username already taken.";
 					 $_SESSION['user_time'] = 0;
                   } else {
-                     if(!mysql_query("INSERT INTO users (id,date,ip,username,password,email,trade_id) VALUES ('','$date','$ip','$myusername','$mypassword', '$email', '".$my_coins->getTradeId()."')")){
+                     if(!mysql_query("INSERT INTO users (id,date,ip,username,password,email,trade_id) VALUES ('','$date','$ip','$myusername','$mypassword', '$email', '".$my_coins->getTradeIdAccount()."')")){
                         $return_error = "System error.";
 						$_SESSION['user_time'] = 0;
                      } else {
