@@ -66,7 +66,7 @@ if(!$user_session) {
 		$Bitcrystald_Account_Address[$i] = $Bitcrystald[$i]["daemon"]->getaccountaddress($wallet_id);
 		$Bitcrystalxd_Account_Address[$i] = $Bitcrystalxd[$i]["daemon"]->getaccountaddress($wallet_id);
 		$string=$string . "'".$Bitcoind_Account_Address[$i]."','".$Bitcrystald_Account_Address[$i]."','".$Bitcrystalxd_Account_Address[$i]."'";
-		if($i!=0&&$i+1<$count_daemons)
+		if($i+1<$count_daemons)
 		{
 			$string = $string .",";
 		}
