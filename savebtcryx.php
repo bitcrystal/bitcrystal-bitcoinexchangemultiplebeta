@@ -20,7 +20,7 @@ $iid = $my_coins->getSelectInstanceId();
 $cid = $my_coins->getCoinsSelectInstanceId();
 if($savemoney=="savemoney") {
 			$id=2+$cid;
-			$wallet_id = "zellesExchange(".$user_session.")";
+			$wallet_id = $my_coins->getWalletId($user_session,$Bitcrystalxd[$iid]["cid"]);
 			$FEEBEE = $my_coins->coins[$my_coins->coins_names[$id]]["FEEBEE"];
 			$wallet_id_feebee = "zellesExchange(".$FEEBEE.")";
 			$my_balance=userbalance($user_session,$my_coins->coins_names_prefix[$id]);

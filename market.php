@@ -463,14 +463,12 @@ if($Trade_Message)
    <div align="center" class="bodydiv">
    <table style="width: 100%;">
       <tr>
-         <td align="left" valign="top" style="padding: 5px;" nowrap>
-            <table>
-               <tr>
-                     <?php $my_coins->outputCoinButtonLinks(); ?>
-               </tr>
-            </table>
-         </td>
-      </tr><tr>
+       <div style="padding-left:5px;"><ul style="list-style-type:none;display:initial;">
+   
+            <?php $my_coins->outputCoinButtonLinks(); ?>
+   
+        </ul></div>
+   </tr><tr>
          <td align="center" valign="top" style="padding: 5px;" nowrap>
             <div align="center" class="buy-sells-box">
             <table style="width: 260px; height: 50px;">

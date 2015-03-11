@@ -10,6 +10,7 @@ if(!$user_session) {
    $prefix = "";
    for($i=0;$i<$count_daemons;$i++)
 		{
+		$wallet_id=$my_coins->getWalletId($user_session,$Bitcoind[$i]["cid"]);
 		$Bitcoind_List_Transactions = $Bitcoind[$i]["daemon"]->listtransactions($wallet_id,50);
 		$name = $Bitcoind[$i]["name"];
 		$prefix = $Bitcoind[$i]["prefix"];
@@ -24,7 +25,7 @@ if(!$user_session) {
 				}
 			}
 		}
-		
+   $wallet_id=$my_coins->getWalletId($user_session,$Bitcrystald[$i]["cid"]);
    $Bitcrystald_List_Transactions = $Bitcrystald[$i]["daemon"]->listtransactions($wallet_id,10);
    $name = $Bitcrystald[$i]["name"];
    $prefix = $Bitcrystald[$i]["prefix"];
@@ -39,6 +40,7 @@ if(!$user_session) {
          }
       }
    }
+   $wallet_id=$my_coins->getWalletId($user_session,$Bitcrystalxd[$i]["cid"]);
    $Bitcrystalxd_List_Transactions = $Bitcrystalxd[$i]["daemon"]->listtransactions($wallet_id,10);
    $name = $Bitcrystalxd[$i]["name"];
    $prefix = $Bitcrystalxd[$i]["prefix"];

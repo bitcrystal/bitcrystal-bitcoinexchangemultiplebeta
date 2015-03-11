@@ -2,6 +2,12 @@
 require_once('coins.php');
 $GLOBALS['cp']=$my_coins->coins_names_prefix;
 $GLOBALS['cp_count']=count($my_coins->coins_names_prefix);
+function getTradeId($i=0, $trade_account=true)
+{
+	if($trade_account)
+		$i=0;
+	return $GLOBALS['cp'][0+$i]."_".$GLOBALS['cp'][1+$i]."_".$GLOBALS['cp'][2+$i];
+}
 function security($value) {
    if(is_array($value)) {
       $value = array_map('security', $value);
@@ -40,17 +46,17 @@ function userbalance($function_user,$function_coin) {
 	for($i = 0; $i < $GLOBALS['cp_count']; $i+=3)
 	{
    if($function_coin==$GLOBALS['cp'][0+$i]) {
-      $function_query = mysql_query("SELECT coin".($i+1)." FROM balances WHERE username='$function_user' AND trade_id = '".$GLOBALS['cp'][0+$i]."_".$GLOBALS['cp'][1+$i]."_".$GLOBALS['cp'][2+$i]."'");
+      $function_query = mysql_query("SELECT coin".($i+1)." FROM balances WHERE username='$function_user' AND trade_id = '".getTradeId($i)."'");
       while($function_row = mysql_fetch_assoc($function_query)) { $function_return = $function_row['coin'.($i+1)]; }
 	  break;
    }
    if($function_coin==$GLOBALS['cp'][2+$i]) {
-      $function_query = mysql_query("SELECT coin".($i+2)." FROM balances WHERE username='$function_user' AND trade_id = '".$GLOBALS['cp'][0+$i]."_".$GLOBALS['cp'][1+$i]."_".$GLOBALS['cp'][2+$i]."'");
+      $function_query = mysql_query("SELECT coin".($i+2)." FROM balances WHERE username='$function_user' AND trade_id = '".getTradeId($i)."'");
       while($function_row = mysql_fetch_assoc($function_query)) { $function_return = $function_row['coin'.($i+2)]; }
 	  break;
    }
    if($function_coin==$GLOBALS['cp'][1+$i]) {
-      $function_query = mysql_query("SELECT coin".($i+3)." FROM balances WHERE username='$function_user' AND trade_id = '".$GLOBALS['cp'][0+$i]."_".$GLOBALS['cp'][1+$i]."_".$GLOBALS['cp'][2+$i]."'");
+      $function_query = mysql_query("SELECT coin".($i+3)." FROM balances WHERE username='$function_user' AND trade_id = '".getTradeId($i)."'");
 	while($function_row = mysql_fetch_assoc($function_query)) { $function_return = $function_row['coin'.($i+3)]; }
 	break;
 	}
@@ -62,7 +68,7 @@ function buyrate($function_coin, $function_coin2) {
 	$found_value=false;
 	for($i = 0; $i < $GLOBALS['cp_count']; $i+=3)
 	{
-   $function_query = mysql_query("SELECT rate FROM buy_orderbook WHERE want='$function_coin' and processed='1' and trade_id = '".$GLOBALS['cp'][0+$i]."_".$GLOBALS['cp'][1+$i]."_".$GLOBALS['cp'][2+$i]."' AND trade_with = '$function_coin2' ORDER BY rate DESC LIMIT 1");
+   $function_query = mysql_query("SELECT rate FROM buy_orderbook WHERE want='$function_coin' and processed='1' and trade_id = '".getTradeId($i)."' AND trade_with = '$function_coin2' ORDER BY rate DESC LIMIT 1");
    while($function_row = mysql_fetch_assoc($function_query)) {
       $function_return = $function_row['rate'];
 	  $found_value=true;
@@ -77,7 +83,7 @@ function sellrate($function_coin,$function_coin2) {
 	$found_value=false;
 	for($i = 0; $i < $GLOBALS['cp_count']; $i+=3)
 	{
-   $function_query = mysql_query("SELECT rate FROM sell_orderbook WHERE want='$function_coin' and processed='1' and trade_id = '".$GLOBALS['cp'][0+$i]."_".$GLOBALS['cp'][1+$i]."_".$GLOBALS['cp'][2+$i]."' AND trade_with = '$function_coin2' ORDER BY rate ASC LIMIT 1");
+   $function_query = mysql_query("SELECT rate FROM sell_orderbook WHERE want='$function_coin' and processed='1' and trade_id = '".getTradeId($i)."' AND trade_with = '$function_coin2' ORDER BY rate ASC LIMIT 1");
    while($function_row = mysql_fetch_assoc($function_query)) {
       $function_return = $function_row['rate'];
 	  $found_value=true;
@@ -95,9 +101,9 @@ function plusfunds($function_user,$function_coin,$function_amount) {
    $function_user_balance = userbalance($function_user,$function_coin);
    $function_balance = $function_user_balance + $function_amount;
    $function_balance = satoshitrim(satoshitize($function_balance));
-   if($function_coin==$GLOBALS['cp'][0+$i]) { $sql = "UPDATE balances SET coin".($i+1)."='$function_balance' WHERE username='$function_user' AND trade_id = '".$GLOBALS['cp'][0+$i]."_".$GLOBALS['cp'][1+$i]."_".$GLOBALS['cp'][2+$i]."'"; $found_value=true;}
-   if($function_coin==$GLOBALS['cp'][2+$i]) { $sql = "UPDATE balances SET coin".($i+2)."='$function_balance' WHERE username='$function_user' AND trade_id = '".$GLOBALS['cp'][0+$i]."_".$GLOBALS['cp'][1+$i]."_".$GLOBALS['cp'][2+$i]."'"; $found_value=true;}
-   if($function_coin==$GLOBALS['cp'][1+$i]) { $sql = "UPDATE balances SET coin".($i+3)."='$function_balance' WHERE username='$function_user' AND trade_id = '".$GLOBALS['cp'][0+$i]."_".$GLOBALS['cp'][1+$i]."_".$GLOBALS['cp'][2+$i]."'"; $found_value=true;}
+   if($function_coin==$GLOBALS['cp'][0+$i]) { $sql = "UPDATE balances SET coin".($i+1)."='$function_balance' WHERE username='$function_user' AND trade_id = '".getTradeId($i)."'"; $found_value=true;}
+   if($function_coin==$GLOBALS['cp'][2+$i]) { $sql = "UPDATE balances SET coin".($i+2)."='$function_balance' WHERE username='$function_user' AND trade_id = '".getTradeId($i)."'"; $found_value=true;}
+   if($function_coin==$GLOBALS['cp'][1+$i]) { $sql = "UPDATE balances SET coin".($i+3)."='$function_balance' WHERE username='$function_user' AND trade_id = '".getTradeId($i)."'"; $found_value=true;}
    if(!$found_value)
 		continue;
    $result = mysql_query($sql);
@@ -118,9 +124,9 @@ function minusfunds($function_user,$function_coin,$function_amount) {
    $function_user_balance = userbalance($function_user,$function_coin);
    $function_balance = $function_user_balance - $function_amount;
    $function_balance = satoshitrim(satoshitize($function_balance));
-   if($function_coin==$GLOBALS['cp'][0+$i]) { $sql = "UPDATE balances SET coin".($i+1)."='$function_balance' WHERE username='$function_user' AND trade_id = '".$GLOBALS['cp'][0+$i]."_".$GLOBALS['cp'][1+$i]."_".$GLOBALS['cp'][2+$i]."'"; $found_value=true;}
-   if($function_coin==$GLOBALS['cp'][2+$i]) { $sql = "UPDATE balances SET coin".($i+2)."='$function_balance' WHERE username='$function_user' AND trade_id = '".$GLOBALS['cp'][0+$i]."_".$GLOBALS['cp'][1+$i]."_".$GLOBALS['cp'][2+$i]."'"; $found_value=true;}
-   if($function_coin==$GLOBALS['cp'][1+$i]) { $sql = "UPDATE balances SET coin".($i+3)."='$function_balance' WHERE username='$function_user' AND trade_id = '".$GLOBALS['cp'][0+$i]."_".$GLOBALS['cp'][1+$i]."_".$GLOBALS['cp'][2+$i]."'"; $found_value=true;}
+   if($function_coin==$GLOBALS['cp'][0+$i]) { $sql = "UPDATE balances SET coin".($i+1)."='$function_balance' WHERE username='$function_user' AND trade_id = '".getTradeId($i)."'"; $found_value=true;}
+   if($function_coin==$GLOBALS['cp'][2+$i]) { $sql = "UPDATE balances SET coin".($i+2)."='$function_balance' WHERE username='$function_user' AND trade_id = '".getTradeId($i)."'"; $found_value=true;}
+   if($function_coin==$GLOBALS['cp'][1+$i]) { $sql = "UPDATE balances SET coin".($i+3)."='$function_balance' WHERE username='$function_user' AND trade_id = '".getTradeId($i)."'"; $found_value=true;}
    if(!$found_value)
 		continue;
    $result = mysql_query($sql);

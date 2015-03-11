@@ -17,13 +17,13 @@ if($form_action=="currentpass") {
          if($pLength >= 3 && $pLength <= 30) {
             if($pnewpass==$preppass) {
                $pcurpass = md5($pcurpass);
-               $Query = mysql_query("SELECT * FROM users WHERE username='$user_session' AND trade_id = '".$my_coins->getTradeId()."'");
+               $Query = mysql_query("SELECT * FROM users WHERE username='$user_session' AND trade_id = '".$my_coins->getTradeIdAccount()."'");
                while($Row = mysql_fetch_assoc($Query)) {
                   $db_Change_Pass_Check = $Row['password'];
                }
                if($pcurpass==$db_Change_Pass_Check) {
                   $pnewpass = md5($pnewpass);
-                  $sql = "UPDATE users SET password='$pnewpass' WHERE username='$user_session' AND trade_id = '".$my_coins->getTradeId()."'";
+                  $sql = "UPDATE users SET password='$pnewpass' WHERE username='$user_session' AND trade_id = '".$my_coins->getTradeIdAccount()."'";
                   $result = mysql_query($sql);
                   if($result) {
                      $withdraw_message = 'Your password has been changed!';

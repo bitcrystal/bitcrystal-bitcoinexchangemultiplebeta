@@ -527,14 +527,19 @@ class w_coins {
 		if($website==NULL)
 			$website = basename($_SERVER['PHP_SELF']);
 		$iid="";
+		if($this->coins_count>3)
+		$set="0";
+		else
+		$set="20";
 		for($i=0;$i < $this->coins_count; $i+=3)
 		{
 			/*if(floor($i/3)>0)
 					$iid = '&iid=' . $this->getId($i);
 				else
 					$iid = "";*/
-			echo "<td><div class=\"coin-button\"><a href=\"".$website."?c=".$this->coins_names_prefix[0+$i]."_".$this->coins_names_prefix[1+$i].$iid."\" class=\"coin-link\">".$this->coins_names_prefix[1+$i]."/".$this->coins_names_prefix[0+$i]."</a></div></td>";
-			echo "<td style=\"padding-left: 20px;\"><div class=\"coin-button\"><a href=\"".$website."?c=".$this->coins_names_prefix[2+$i]."_".$this->coins_names_prefix[1+$i].$iid."\" class=\"coin-link\">".$this->coins_names_prefix[1+$i]."/".$this->coins_names_prefix[2+$i]."</a></div></td>";
+			echo "<li style='float:left;width:auto;paddin-left:0;list-style-type:none;'><div class=\"coin-button\"><a href=\"".$website."?c=".$this->coins_names_prefix[0+$i]."_".$this->coins_names_prefix[1+$i].$iid."\" class=\"coin-link\">".$this->coins_names_prefix[1+$i]."/".$this->coins_names_prefix[0+$i]."</a></div></li>";
+            echo "<li style='float:left;width:auto;paddin-left:0';list-style-type:none;><div class=\"coin-button\"><a href=\"".$website."?c=".$this->coins_names_prefix[2+$i]."_".$this->coins_names_prefix[1+$i].$iid."\" class=\"coin-link\">".$this->coins_names_prefix[1+$i]."/".$this->coins_names_prefix[2+$i]."</a></div></li>";
+            //echo "<li style=\"padding-left: ".$set."px;\"><div class=\"coin-button\"><a href=\"".$website."?c=".$this->coins_names_prefix[2+$i]."_".$this->coins_names_prefix[1+$i].$iid."\" class=\"coin-link\">".$this->coins_names_prefix[1+$i]."/".$this->coins_names_prefix[2+$i]."</a></div></li>";
 		}
 	}
 	
@@ -651,7 +656,7 @@ class w_coins {
 	public function outputBalances($user_session)
 	{
 		$id=$this->getInstanceId();
-		$i=$this->getCoinsSelectInstanceId();
+		$i=$this->getCoinsInstanceId();
 		//$this->setSelectInstanceId($id);
 		if(!$user_session) {
 			echo '<b>Finances:</b><p></p>
@@ -746,7 +751,7 @@ class w_coins {
 	
 	public function getCoinsSelectInstanceId()
 	{
-		return floor($this->getSelectInstanceId()*3);
+		return floor($this->select_instance_id*3);
 	}
 	
 	public function getBitcoindDaemons()
@@ -812,6 +817,13 @@ class w_coins {
 		return array($array, $count);
 	}
 	
+	public function getTradeIdAccount()
+	{
+		//$cid=$this->getCoinsInstanceId();
+		$cid=0;
+		return $this->coins_names_prefix[0+$cid]."_".$this->coins_names_prefix[1+$cid]."_".$this->coins_names_prefix[2+$cid];
+	}
+	
 	public function getTradeId()
 	{
 		$cid=$this->getCoinsInstanceId();
@@ -834,7 +846,8 @@ class w_coins {
 		$id = $this->getInstanceId();
 		//$this->setSelectInstanceId($id);
 		$cid = $this->getCoinsInstanceId();
-		$link = '<td colspan="2" align="right" valign="top" style="font-weight: bold; padding: 5px;" nowrap>Deposit/Withdraw (<a href="fundsbtc.php">'.$this->coins_names_prefix[0+$cid].'</a>/<a href="fundsbtcry.php">'.$this->coins_names_prefix[1+$cid].'</a>/<a href="fundsbtcryx.php">'.$this->coins_names_prefix[2+$cid].'</a>)</td>';
+		$link = 
+ '<td colspan="2" align="right" valign="top" style="font-weight: bold; padding: 5px;">Deposit/Withdraw (<a href="fundsbtc.php">'.$this->coins_names_prefix[0+$cid].'</a>/<a href="fundsbtcry.php">'.$this->coins_names_prefix[1+$cid].'</a>/<a href="fundsbtcryx.php">'.$this->coins_names_prefix[2+$cid].'</a>)</td>';
 		echo $link;
 	}
 	

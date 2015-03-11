@@ -137,6 +137,7 @@ class my_all_coins
 			$w_coins_settings[$i]->set_rpc_settings_coin_2($this->coins[1+$offset]["rpcsettings"]["user"],$this->coins[1+$offset]["rpcsettings"]["pass"],$this->coins[1+$offset]["rpcsettings"]["host"],$this->coins[1+$offset]["rpcsettings"]["port"],$this->coins[1+$offset]["rpcsettings"]["walletpassphrase"],$this->coins[1+$offset]["rpcsettings"]["walletpassphrase_timeout"]);
 			$w_coins_settings[$i]->set_rpc_settings_coin_3($this->coins[2+$offset]["rpcsettings"]["user"],$this->coins[2+$offset]["rpcsettings"]["pass"],$this->coins[2+$offset]["rpcsettings"]["host"],$this->coins[2+$offset]["rpcsettings"]["port"],$this->coins[2+$offset]["rpcsettings"]["walletpassphrase"],$this->coins[2+$offset]["rpcsettings"]["walletpassphrase_timeout"]);
 		}
+		
 		$this->w_coins_settings=array($w_coins_settings);
 		return array($w_coins_settings);
 	}
