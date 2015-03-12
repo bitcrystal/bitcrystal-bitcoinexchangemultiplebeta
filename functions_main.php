@@ -145,6 +145,15 @@ function get_current_url()
 	return 'http'.(empty($_SERVER['HTTPS'])?'':'s').'://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
 }
 
+function get_exchange_url()
+{
+	$p = get_current_url();
+	$p=str_replace("http://","",$p);
+	$p=str_replace("https://","",$p);
+	$p = str_replace("auth.php","index.php",$p);
+	return $p;
+}
+
 function get_root_path($file)
 {
 	$str = dirname(__FILE__);
