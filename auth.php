@@ -3,7 +3,7 @@ require'database.php';
 require_once'functions_main.php';
 include'coins.php';
 
-$server_url = "example.com";      // url to the exchange
+$server_url = get_exchange_url();      // url to the exchange
 $script_title = "[zelles/Werris] Bitcoin Exchange";  // title of the exchange
 
 $CSS_Stylesheet = '<link rel="stylesheet" type="text/css" href="stylesheet.css">';  // a global style sheet
