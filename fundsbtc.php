@@ -25,7 +25,7 @@ if($withdraw_withdraw=="withdraw") {
             $FEEBEE = $my_coins->coins[$my_coins->coins_names[0+$cid]]["FEEBEE"];
 			$set_withdraw_amount = $withdraw_amount - $fee;       // minus the fee
             $true_withdraw_amount = satoshitize($set_withdraw_amount);
-            $Bitcoind_Withdraw_From = $Bitcoind->sendtoaddress($withdraw_address,(float)$true_withdraw_amount);
+            $Bitcoind_Withdraw_From = $Bitcoind[$iid]["daemon"]->sendtoaddress($withdraw_address,(float)$true_withdraw_amount);
             if($Bitcoind_Withdraw_From) {
                $result = minusfunds($user_session,$coins_names_prefix[0+$cid],$withdraw_amount);
                $result = plusfunds($FEEBEE,$my_coins->coins_names_prefix[0+$cid],$fee);         // add fee to feebee account
