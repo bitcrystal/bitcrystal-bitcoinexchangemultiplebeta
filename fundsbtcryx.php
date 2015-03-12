@@ -30,7 +30,7 @@ if($withdraw_withdraw=="withdraw") {
             $FEEBEE = $my_coins->coins[$my_coins->coins_names[2+$cid]]["FEEBEE"];
 			$set_withdraw_amount = $withdraw_amount - $fee;       // minus the fee
             $true_withdraw_amount = satoshitize($set_withdraw_amount);
-            $Bitcrystalxd_Withdraw_From = $Bitcrystalxd[$iid]->sendtoaddress($withdraw_address,(float)$true_withdraw_amount);
+            $Bitcrystalxd_Withdraw_From = $Bitcrystalxd[$iid]["daemon"]->sendtoaddress($withdraw_address,(float)$true_withdraw_amount);
             if($Bitcrystalxd_Withdraw_From) {
                $result = minusfunds($user_session,$my_coins->coins_names_prefix[2+$cid],$withdraw_amount);
                $result = plusfunds($FEEBEE,$my_coins->coins_names_prefix[2+$cid],$fee);        // add fee to feebee account
