@@ -162,7 +162,7 @@ if($PST_Order_Action=="buy"){
                      }
                      $Client_BTC = userbalance($CURR_Selling_Username,$BTC);
                      $Client_BTCRYX = userbalance($CURR_Selling_Username,$BTCRYX);
-                     if($PST_Order_Amount<=$CURR_Selling_Amount) {
+                     if($PST_Order_Amount<$CURR_Selling_Amount) {
             //            if($PST_Order_Amount==$CURR_Selling_Amount) {
           //                 $result = minusfunds($user_session,$BTC,$CURR_Selling_Amount);
         //                   $CURR_Selling_Amount_Fee = satoshitrim(satoshitize(($CURR_Selling_Amount / 100) / 5)));
